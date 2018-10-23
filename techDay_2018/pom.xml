@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>testdemo</groupId>
+	<artifactId>testdemo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.14.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180130</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.14.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Cucumber Libs -->
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/info.cukes/cucumber-testng -->
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-testng</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/net.sourceforge.jexcelapi/jxl -->
+		<dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>2.6.12</version>
+		</dependency>
+
+
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>selenium-tests</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.7</source>
+							<target>1.7</target>
+							<encoding>UTF-8</encoding>
+							<compilerArgument>-Xlint:unchecked</compilerArgument>
+						</configuration>
+						<version>3.5.1</version>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>2.10</version>
+						<configuration>
+							<systemPropertyVariables>
+								<browser>${browserType}</browser>
+								<version>${version}</version>
+								<remote>${remote}</remote>
+								<dataFile>${excelFile}</dataFile>
+								<dataSheet>${sheet}</dataSheet>
+								<APIFile>${APIFile}</APIFile>
+								<APISheet>${APISheet}</APISheet>
+								<seleniumHub>${seleniumHub}</seleniumHub>
+								<threadCnt>${threads}</threadCnt>
+								<IsCucumber>False</IsCucumber>
+								<desiredBrowserVersion>${browserVersion}</desiredBrowserVersion>
+								<reportDir>${project.basedir}/report/${suite}/${browser}_${maven.build.timestamp}</reportDir>
+								<webdriver.chrome.driver>${project.basedir}/selenium_driver/chromedriver.exe</webdriver.chrome.driver>
+								<webdriver.gecko.driver>${project.basedir}/selenium_driver/geckodriver.exe</webdriver.gecko.driver>
+								<webdriver.edge.driver>${project.basedir}/selenium_driver/MicrosoftWebDriver.exe</webdriver.edge.driver>
+								<video.folder>${project.basedir}/report/${suite}/${browser}_${maven.build.timestamp}/video</video.folder>
+							</systemPropertyVariables>
+							<!-- <reportsDirectory>${project.basedir}/report/${suite}/${browser}_${maven.build.timestamp}/report</reportsDirectory> -->
+							<suiteXmlFiles>
+								<suiteXmlFile>suites/${suite}.xml</suiteXmlFile>
+							</suiteXmlFiles>
+						</configuration>
+						<executions>
+							<execution>
+								<id>integration-test</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>integration-test</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>verify</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
